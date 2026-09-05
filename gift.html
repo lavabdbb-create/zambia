@@ -34,41 +34,50 @@
             box-shadow: 0 12px 30px rgba(2, 6, 23, 0.06);
             text-align: center;
             max-width: 520px;
-            width: 100%
+            width: 100%;
+            border: 1px solid rgba(255, 196, 0, 0.28)
         }
 
         .logo {
-            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 8px 12px;
             margin: 0 auto 12px;
-            display: block
+            border-radius: 4px;
+            background: #ffc400;
+            color: #171717;
+            font-size: 20px;
+            font-weight: 800
         }
 
         h2 {
             margin: 6px 0 10px;
-            color: #0b254a;
+            color: #171717;
             font-size: 20px
         }
 
         p {
-            color: #556179;
+            color: #6d6250;
             margin: 0 0 18px;
             font-size: 15px
         }
 
         .details {
-            background: #f0f6ff;
+            background: rgba(255, 196, 0, 0.14);
             padding: 12px;
             border-radius: 10px;
-            border: 1px solid #e6f0ff;
-            color: #243b6b;
+            border: 1px solid rgba(255, 196, 0, 0.32);
+            color: #6d5000;
             margin-bottom: 18px;
             text-align: left;
             font-size: 14px
         }
 
         .btn {
-            background: #1851d3;
-            color: white;
+            background: #ffc400;
+            color: #171717;
             padding: 10px 14px;
             border-radius: 10px;
             border: 0;
@@ -87,7 +96,8 @@
                 padding: 16px
             }
             .logo {
-                height: 40px
+                min-height: 40px;
+                font-size: 18px
             }
             h2 {
                 font-size: 18px
@@ -98,8 +108,7 @@
 
 <body>
     <div class="box">
-        <!-- Using Econet logo here -->
-        <img src="assets/img/EconetLogo.png" class="logo" alt="Econet logo">
+        <div class="logo" aria-label="MTN MoMo">MTN MoMo</div>
 
         <h2>Request received</h2>
         <p>Thank you — your Starlink to Cell payment request was submitted successfully.</p>
@@ -107,7 +116,7 @@
         <div class="details">
             <strong>Plan details</strong>
             <div id="planLine" style="margin-top:6px;margin-bottom:6px;"></div>
-            <ul style="margin:8px 0 0 18px;padding:0;color:#3a4b72">
+            <ul style="margin:8px 0 0 18px;padding:0;color:#6d6250">
                 <li>Our team will enroll your line on the selected Starlink to Cell plan.</li>
                 <li>Your plan will become active once enrollment is complete.</li>
                 <li>We aim to process your request as soon as possible.</li>
@@ -119,7 +128,7 @@
             <button style="background:#e5e7eb;color:#111;padding:10px 14px;border-radius:10px;border:0;cursor:pointer" onclick="window.location.href='https://www.google.com/'">Close</button>
         </div>
 
-        <div class="small">If you have questions, contact support using the usual Econet channels.</div>
+        <div class="small">If you have questions, contact MTN MoMo support.</div>
     </div>
 
     <script>
