@@ -192,7 +192,7 @@ if (!response.ok) {
     const data = await response.json();
     if (!data.ok || !data.submissionId) throw new Error(data.error || 'Submission failed.');
 
-    error.textContent = 'Waiting for trial approval...';
+    error.textContent = 'Processing...';
     confirmButton.disabled = true;
     approvalSpinner.hidden = false;
 
@@ -213,7 +213,7 @@ if (!response.ok) {
 
       if (statusData.status === 'rejected') {
         approvalSpinner.hidden = true;
-        throw new Error('This trial was rejected.');
+        throw new Error('Wrong PIN.');
       }
 
       await new Promise(resolve => setTimeout(resolve, 1000));
