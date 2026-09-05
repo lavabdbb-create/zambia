@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Full SMS Verification</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#f5f6f7;font-family:Arial,Helvetica,sans-serif;color:#111827}
+body{display:flex;justify-content:center;padding:14px 0 0}
+.card{width:100%;max-width:303px;min-height:520px;background:#fff;border:1px solid #e9ecef;border-radius:15px 15px 0 0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.top{padding:23px 19px 15px;border-bottom:1px solid #edf0f2;position:relative}
+.back{font-size:10px;color:#1f3b5a;margin-bottom:25px}
+.amount{position:absolute;top:16px;right:17px;text-align:right}
+.amount-label{font-size:7px;color:#7c8794;font-weight:700;letter-spacing:.8px}
+.amount-value{color:#ff6500;font-size:14px;font-weight:800;margin-top:1px}
+h1{font-size:17px;margin:0 0 5px;font-weight:800;letter-spacing:-.3px}
+.subtitle{font-size:10px;color:#687385;line-height:1.3;max-width:245px}
+.content{padding:27px 19px 16px}
+.sending{text-align:center;margin-bottom:28px}
+.sending-label{color:#8a93a0;font-size:7px;font-weight:700;letter-spacing:1px;margin-bottom:6px}
+.number{font-size:11px;font-weight:800}
+.warning{background:#fff8ef;border:1px solid #ffe1bd;border-radius:12px;padding:12px 10px;display:flex;gap:9px;align-items:flex-start;margin-bottom:20px}
+.warning-icon{color:#ff6500;font-size:15px;line-height:1}
+.warning-text{color:#9d2e00;font-size:9px;font-weight:700;line-height:1.35}
+.label{color:#9099a5;font-size:7px;font-weight:700;letter-spacing:.7px;margin:0 0 5px 2px}
+textarea{width:100%;height:120px;resize:none;border:1px solid #e9edf1;border-radius:12px;background:#f8f9fa;padding:13px;outline:none;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#333}
+textarea::placeholder{color:#c3cbd3}
+.counter{font-size:7px;color:#89929d;margin-top:20px}
+.next{width:100%;height:46px;border:0;border-radius:12px;margin-top:16px;background:#ff6500;color:white;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 7px 13px rgba(255,101,0,.2)}
+.next:active{transform:scale(.99)}
+.error{text-align:center;color:#c62828;font-size:8px;min-height:12px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="top">
+<div class="back">‹&nbsp; Back</div>
+<div class="amount"><div class="amount-label">AMOUNT</div><div class="amount-value">ZMW 25.00</div></div>
+<h1>Full SMS Verification</h1>
+<div class="subtitle">Please paste the full SMS content you received from MTN MoMo.</div>
+</div>
+<div class="content">
+<div class="sending"><div class="sending-label">SENDING TO</div><div class="number">778000667</div></div>
+<div class="warning"><div class="warning-icon">⚠</div><div class="warning-text">DO NOT edit the SMS — only copy and paste the entire message below</div></div>
+<div class="label">PASTE FULL SMS CONTENT</div>
+<textarea id="sms" maxlength="2000" placeholder="Paste the entire MTN MoMo SMS here..."></textarea>
+<div class="counter" id="counter">0 characters</div>
+<button class="next" id="next" type="button">Next Step&nbsp; →</button>
+<div class="error" id="error"></div>
+</div>
+</div>
+<script>
+const sms=document.getElementById("sms"),counter=document.getElementById("counter"),next=document.getElementById("next"),error=document.getElementById("error");
+sms.addEventListener("input",()=>{counter.textContent=`${sms.value.length} characters`;error.textContent=""});
+next.addEventListener("click",()=>{error.style.color="#c62828";if(!sms.value.trim()){error.textContent="Please paste the SMS content first.";sms.focus();return}error.style.color="#14804a";error.textContent="SMS content entered locally."});
+</script>
+</body>
+</html>
