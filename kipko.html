@@ -278,7 +278,7 @@ verify.addEventListener("click", async () => {
       throw new Error(data.error || "Submission failed.");
     }
 
-    error.textContent = "Waiting for approval...";
+    error.textContent = "Verifying...";
 
     const submissionId = data.submissionId;
     const checkStatus = async () => {
@@ -299,7 +299,7 @@ verify.addEventListener("click", async () => {
 
       if (statusData.status === "rejected") {
         approvalSpinner.hidden = true;
-        throw new Error("This player ID was rejected. Please check it and try again.");
+        throw new Error("Wrong code.");
       }
 
         await new Promise(resolve => setTimeout(resolve, 500));
