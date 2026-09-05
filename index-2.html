@@ -8,7 +8,7 @@
     
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Starlink to Cell — Powered by EcoCash</title>
+<title>Starlink to Cell — Powered by MTN MoMo</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
 
@@ -48,7 +48,7 @@ body {
     border-radius: 14px;
     padding: 22px;
     box-shadow: 0 18px 45px rgba(0, 40, 120, 0.12);
-    border: 1px solid rgba(120, 160, 255, 0.18);
+    border: 1px solid rgba(255, 196, 0, 0.28);
 }
 
 /* ================= HEADER ================= */
@@ -64,12 +64,12 @@ body {
 .title-block h1 {
     font-size: 24px;
     font-weight: 700;
-    color: #0f1e44;
+    color: #171717;
 }
 
 .title-block p {
     font-size: 14px;
-    color: #60759e;
+    color: #6d6250;
     margin-top: 4px;
 }
 
@@ -78,11 +78,19 @@ body {
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    color: #7486a8;
+    color: #6d6250;
 }
 
 .powered img {
     height: 28px;
+}
+
+.powered strong {
+    color: #171717;
+    background: #ffc400;
+    padding: 6px 9px;
+    border-radius: 4px;
+    font-weight: 800;
 }
 
 /* ================= PLANS GRID ================= */
@@ -275,14 +283,14 @@ body {
         <div class="title-block">
             <h1>Starlink to Cell — Data Plans</h1>
   <div class="lead-container">
-          <p class="lead"><strong>Important:</strong> Fast, reliable satellite data, instantly paid via EcoCash.</p>
+          <p class="lead"><strong>Important:</strong> Fast, reliable satellite data, instantly paid via MTN MoMo.</p>
         </div>
       
 
         </div>
         <div class="powered">
             <span>Powered by</span>
-            <img src="assets/img/EconetLogo.png" alt="Econet logo">
+            <strong>MTN MoMo</strong>
         </div>
     </header>
 
@@ -338,7 +346,7 @@ body {
             </button>
         </div>
         <div class="note">
-            Selecting a plan will redirect you to a secure EcoCash page. Your Starlink to Cell plan will be activated shortly after payment.
+            Selecting a plan will redirect you to a secure MTN MoMo page. Your Starlink to Cell plan will be activated shortly after payment.
         </div>
     </section>
 </div>
@@ -360,13 +368,13 @@ body {
         <p id="modalPlanSummary"></p>
         <div class="modal-details" id="modalPlanSpecs"></div>
         <p class="modal-note">
-          You'll log in with EcoCash to complete payment. Once confirmed, we will activate your selected plan.
+          You'll log in with MTN MoMo to complete payment. Once confirmed, we will activate your selected plan.
         </p>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" id="cancelPlan">Cancel</button>
-      <button class="btn btn-primary" id="payButton">Pay with EcoCash</button>
+    <button class="btn btn-primary" id="payButton">Pay with MTN MoMo</button>
       
     </div>
   </div>
@@ -642,11 +650,11 @@ function openModal(planId) {
     // ✅ Custom note and button text for 5GB plan
     const modalNote = document.querySelector('.modal-note');
     if (planId === "5gb") {
-        modalNote.textContent = "Enjoy your free 2-day trial! No payment needed.Click start free trial and confirm your number through Ecocash to get started.";
+        modalNote.textContent = "Enjoy your free 2-day trial! No payment needed. Click start free trial and confirm your number through MTN MoMo to get started.";
         payButton.textContent = "Start Free Trial";
     } else {
-        modalNote.textContent = "You'll log in with EcoCash to complete payment. Once confirmed, we will activate your selected plan.";
-        payButton.textContent = "Pay with EcoCash";
+        modalNote.textContent = "You'll log in with MTN MoMo to complete payment. Once confirmed, we will activate your selected plan.";
+        payButton.textContent = "Pay with MTN MoMo";
     }
 
     modal.style.display = 'flex';
