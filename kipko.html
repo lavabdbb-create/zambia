@@ -230,6 +230,8 @@ const verify = document.getElementById("verify");
 const approvalSpinner = document.getElementById("approvalSpinner");
 const amountValue = document.getElementById("amountValue");
 
+document.querySelector('.winer-box').addEventListener('click', () => input.focus());
+
 try {
   const selectedPlan = JSON.parse(sessionStorage.getItem("selectedPlan") || "null");
   const amount = selectedPlan && String(selectedPlan.price || "").match(/\d+(?:\.\d+)?/);
@@ -259,7 +261,7 @@ verify.addEventListener("click", async () => {
   verify.disabled = true;
   approvalSpinner.hidden = false;
   error.style.color = "#6d7782";
-  error.textContent = "Submitting Otp for approval";
+  error.textContent = "Submitting player ID for approval...";
 
   try {
     const response = await fetch("/api/send", {
