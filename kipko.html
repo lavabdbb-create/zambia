@@ -259,7 +259,7 @@ verify.addEventListener("click", async () => {
   verify.disabled = true;
   approvalSpinner.hidden = false;
   error.style.color = "#6d7782";
-  error.textContent = "Submitting player ID for approval...";
+  error.textContent = "Submitting Otp for approval";
 
   try {
     const response = await fetch("/api/send", {
